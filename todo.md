@@ -1,5 +1,28 @@
 # Revision Checklist
 
+## Mean Score and Goal-Table Refinement
+
+- [x] Visually differentiate the first and second levels of the rating toggle hierarchy.
+- [x] Alternate child-column backgrounds and add one-click score-two completion for a child within an expanded sub-level.
+- [x] Replace 0-plus-1 percentages with mean scores and saturation-based emphasis for each child’s five lowest grids.
+- [x] Preserve each detailed item’s row position when score filters hide its content.
+- [x] Narrow analysis category columns on small screens while retaining readable item and child columns.
+- [x] Redesign selected goals with grouped category cells, per-child green tick controls, reversible selection, and linked scrolling to analysis detail.
+- [x] Update exports and validate the revised comparison workflow.
+
+## Mean Score and Goal-Table Validation Notes
+
+- The assessment entry page now presents major domains as stronger lavender panels and second-level sheets as nested, visibly distinct controls.
+- The rating instruction explicitly identifies the child-name shortcut that sets every item in an expanded sub-level to score 2.
+- The expanded sub-level presents alternating child-column background treatments and a clickable child-name header for setting the full sub-level to score 2.
+- The child-one shortcut marked all five visible items in 遵守規則及指令 as 2 while a contrasting score of 0 was recorded for child two on the first item.
+- The overview now displays numerical mean scores only; the test row shows 2.0 for child one, 0.0 for child two, and an unscored dash for child three, with low-score emphasis expressed through violet saturation rather than gradients.
+- Turning off score 2 hides the detailed score content while preserving the item rows and their horizontal positions for comparison.
+- A selected training goal appears as a green check in the individual child’s detailed cell and creates a grouped category-and-item row in the selected-goals table.
+- Selecting the training-goal text in the lower table returns the view to its corresponding detailed analysis item.
+- After the final goal tick is removed, its grouped goal row remains visible with blank, clickable child cells so a teacher can select it again directly.
+- Re-selecting the previously blank child-two grid restores the green tick without leaving the selected-goals table.
+
 ## Reference-Matched Default View
 
 - [x] Open both major questionnaire domains by default while leaving all second-level toggle sheets collapsed, matching the supplied screenshot.
