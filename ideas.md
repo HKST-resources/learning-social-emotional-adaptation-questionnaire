@@ -71,3 +71,4 @@ The wordmark is paired with a compact, text-free compass mark composed of three 
 - Grouped rings represent children converging toward shared goals. They recur only at major setup, comparison, and analysis transitions, rather than as arbitrary background ornament.
 - The revised workflow uses a white clinical workspace with colourful, clear gradient transitions requested for energy and wayfinding. Gradients are confined to major workflow markers and never used behind assessment text.
 - The document title and key workflow labels use Noto Serif TC; form content uses Noto Sans TC for small-screen clarity and dense clinical comparison.
+- The entry form uses faint ledger rules on white to preserve a clinical document rhythm. The vivid gradient panel stays as a user-requested wayfinding cue, and the requested logo-free introduction takes precedence over adding a brand mark there.

@@ -125,6 +125,12 @@ textarea { cursor: text; }
 .screen-ui h1 { font-family: "Noto Serif TC", ui-serif, Georgia, serif; letter-spacing: 0.01em; }
 .screen-ui img[alt="兒童發展觀察標誌"] { box-shadow: 0 6px 18px rgba(38, 44, 95, 0.12); }
 
+/* Setup form: a subtle folio rule pattern gives the white working surface clinical-document structure. */
+.screen-ui > section > section {
+  background-color: #fff;
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 40px, rgba(99, 108, 148, 0.045) 41px);
+}
+
 .comparison-scroll::-webkit-scrollbar { height: 10px; }
 .comparison-scroll::-webkit-scrollbar-track { background: #F2F3FA; }
 .comparison-scroll::-webkit-scrollbar-thumb { border: 3px solid #F2F3FA; border-radius: 999px; background: #A59DFF; }
