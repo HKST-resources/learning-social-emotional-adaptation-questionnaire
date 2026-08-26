@@ -1,9 +1,13 @@
+/* Design reminder — Clinical Stationery Atelier: warm paper, editorial type, Observation Jade, ledger-like comparison surfaces. */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Serif+TC:wght@500;600;700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-sans: "Noto Sans TC", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Noto Serif TC", ui-serif, Georgia, serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -43,135 +47,98 @@
 }
 
 :root {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-600);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
   --radius: 0.65rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.235 0.015 65);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.235 0.015 65);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.235 0.015 65);
-  --secondary: oklch(0.98 0.001 286.375);
-  --secondary-foreground: oklch(0.4 0.015 65);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.141 0.005 285.823);
-  --destructive: oklch(0.577 0.245 27.325);
+  --background: oklch(0.966 0.01 89);
+  --foreground: oklch(0.28 0.035 166);
+  --card: oklch(0.988 0.006 90);
+  --card-foreground: oklch(0.28 0.035 166);
+  --popover: oklch(0.988 0.006 90);
+  --popover-foreground: oklch(0.28 0.035 166);
+  --primary: oklch(0.38 0.07 174);
+  --primary-foreground: oklch(0.98 0.008 100);
+  --secondary: oklch(0.93 0.018 154);
+  --secondary-foreground: oklch(0.33 0.045 166);
+  --muted: oklch(0.95 0.01 150);
+  --muted-foreground: oklch(0.48 0.03 165);
+  --accent: oklch(0.93 0.025 153);
+  --accent-foreground: oklch(0.33 0.045 166);
+  --destructive: oklch(0.56 0.16 30);
   --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.623 0.214 259.815);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.235 0.015 65);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.623 0.214 259.815);
+  --border: oklch(0.87 0.014 154);
+  --input: oklch(0.86 0.014 154);
+  --ring: oklch(0.43 0.07 174);
+  --chart-1: oklch(0.65 0.085 159);
+  --chart-2: oklch(0.72 0.13 80);
+  --chart-3: oklch(0.65 0.135 35);
+  --chart-4: oklch(0.52 0.07 172);
+  --chart-5: oklch(0.8 0.08 130);
+  --sidebar: oklch(0.95 0.015 150);
+  --sidebar-foreground: oklch(0.28 0.035 166);
+  --sidebar-primary: oklch(0.38 0.07 174);
+  --sidebar-primary-foreground: oklch(0.98 0.008 100);
+  --sidebar-accent: oklch(0.92 0.025 153);
+  --sidebar-accent-foreground: oklch(0.33 0.045 166);
+  --sidebar-border: oklch(0.86 0.014 154);
+  --sidebar-ring: oklch(0.43 0.07 174);
 }
 
-.dark {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-500);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.85 0.005 65);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.85 0.005 65);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.85 0.005 65);
-  --secondary: oklch(0.24 0.006 286.033);
-  --secondary-foreground: oklch(0.7 0.005 65);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground:  oklch(0.92 0.005 65);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.488 0.243 264.376);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --sidebar: oklch(0.21 0.006 285.885);
-  --sidebar-foreground: oklch(0.85 0.005 65);
-  --sidebar-accent: oklch(0.274 0.006 286.033);
-  --sidebar-accent-foreground:  oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.488 0.243 264.376);
+* { border-color: var(--border); }
+html { scroll-behavior: smooth; }
+body { margin: 0; min-width: 320px; background: #F4F1EA; color: #233834; font-family: "Noto Sans TC", ui-sans-serif, system-ui, sans-serif; }
+button, input, textarea { font: inherit; }
+button:not(:disabled), [role="button"]:not([aria-disabled="true"]), input:not(:disabled), textarea:not(:disabled) { cursor: pointer; }
+textarea { cursor: text; }
+
+.brand-signature { position: relative; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+.brand-signature::before, .brand-signature::after { position: absolute; border: 1px solid rgba(20, 91, 88, 0.20); border-radius: 999px; content: ""; }
+.brand-signature::before { width: 58px; height: 58px; }
+.brand-signature::after { width: 38px; height: 38px; transform: translate(9px, -7px); }
+.brand-signature img { position: relative; z-index: 1; }
+.brand-signature-small::before { width: 48px; height: 48px; }
+.brand-signature-small::after { width: 31px; height: 31px; transform: translate(7px, -6px); }
+
+.ledger-input {
+  border: 0;
+  border-bottom: 2px solid #BED0C6;
+  border-radius: 0;
+  background-color: rgba(255,255,255,0.72);
+  background-image: linear-gradient(to bottom, transparent calc(100% - 1px), rgba(194, 211, 201, 0.32) calc(100% - 1px));
+  box-shadow: inset 0 1px 0 rgba(20,91,88,0.08);
+}
+.ledger-input:hover { border-bottom-color: #75A28F; background-color: rgba(255,255,255,0.90); }
+.ledger-input:focus { border-bottom-color: #145B58; box-shadow: inset 0 1px 0 rgba(20,91,88,0.10), 0 5px 0 -3px rgba(20,91,88,0.18); }
+.ring-stage::after { position: absolute; right: 19%; top: 50%; width: 6px; height: 6px; border-radius: 999px; background: #76A492; box-shadow: 14px -12px 0 rgba(118,164,146,0.40), 27px 8px 0 rgba(118,164,146,0.25); content: ""; opacity: 0.9; }
+
+.comparison-scroll::-webkit-scrollbar { height: 10px; }
+.comparison-scroll::-webkit-scrollbar-track { background: #EDF1ED; }
+.comparison-scroll::-webkit-scrollbar-thumb { border: 3px solid #EDF1ED; border-radius: 999px; background: #91AAA0; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .section-row, .context-row, .comparison-scroll tbody tr { animation: rise-in 180ms cubic-bezier(0.23, 1, 0.32, 1) both; }
 }
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-  button:not(:disabled),
-  [role="button"]:not([aria-disabled="true"]),
-  [type="button"]:not(:disabled),
-  [type="submit"]:not(:disabled),
-  [type="reset"]:not(:disabled),
-  a[href],
-  select:not(:disabled),
-  input[type="checkbox"]:not(:disabled),
-  input[type="radio"]:not(:disabled) {
-    @apply cursor-pointer;
-  }
-}
+@keyframes rise-in { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
 
-@layer components {
-  /**
-   * Custom container utility that centers content and adds responsive padding.
-   *
-   * This overrides Tailwind's default container behavior to:
-   * - Auto-center content (mx-auto)
-   * - Add responsive horizontal padding
-   * - Set max-width for large screens
-   *
-   * Usage: <div className="container">...</div>
-   *
-   * For custom widths, use max-w-* utilities directly:
-   * <div className="max-w-6xl mx-auto px-4">...</div>
-   */
-  .container {
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 1rem; /* 16px - mobile padding */
-    padding-right: 1rem;
-  }
-
-  .flex {
-    min-height: 0;
-    min-width: 0;
-  }
-
-  @media (min-width: 640px) {
-    .container {
-      padding-left: 1.5rem; /* 24px - tablet padding */
-      padding-right: 1.5rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .container {
-      padding-left: 2rem; /* 32px - desktop padding */
-      padding-right: 2rem;
-      max-width: 1280px; /* Standard content width */
-    }
-  }
+@media print {
+  @page { size: A4; margin: 13mm; }
+  body { background: #fff !important; color: #182C28 !important; font-family: "Noto Sans TC", sans-serif !important; font-size: 10pt; }
+  .screen-ui { display: none !important; }
+  .print-report { display: block !important; color: #182C28; }
+  .print-report header { border-bottom: 2px solid #145B58; padding-bottom: 10px; }
+  .print-report header > p { margin: 0; color: #35665C; font-size: 9pt; font-weight: 700; letter-spacing: .12em; }
+  .print-report h1 { margin: 5px 0 8px; color: #164A46; font-family: "Noto Serif TC", serif; font-size: 22pt; }
+  .print-meta { display: flex; gap: 24px; flex-wrap: wrap; color: #4C655E; font-size: 9pt; }
+  .print-section { break-inside: avoid; margin-top: 18px; }
+  .print-section h2 { border-left: 4px solid #145B58; margin: 0 0 9px; padding-left: 8px; color: #164A46; font-family: "Noto Serif TC", serif; font-size: 15pt; }
+  .print-section h3 { margin: 0 0 5px; color: #235A50; font-size: 11pt; }
+  .print-section h4 { margin: 9px 0 4px; color: #45645B; font-size: 9.5pt; }
+  .print-section p, .print-section li { line-height: 1.6; }
+  .print-section ol { margin: 5px 0; padding-left: 20px; }
+  .print-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .print-columns > div { border: 1px solid #C9D8D0; padding: 10px; }
+  .print-child { break-inside: avoid; border: 1px solid #D8E2DC; margin: 8px 0; padding: 10px; }
+  .print-report table { width: 100%; border-collapse: collapse; font-size: 8pt; }
+  .print-report th, .print-report td { border: 1px solid #BFCFC7; padding: 5px; text-align: left; vertical-align: top; line-height: 1.45; }
+  .print-report th { background: #EAF2ED !important; color: #244F47; font-weight: 700; }
+  .print-report tr { break-inside: avoid; }
 }
