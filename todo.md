@@ -1,5 +1,32 @@
 # Revision Checklist
 
+## Reference-Matched Default View
+
+- [x] Open both major questionnaire domains by default while leaving all second-level toggle sheets collapsed, matching the supplied screenshot.
+- [x] Verify the initial rating-page layout against the supplied reference.
+
+## Percentage and Comparison Refinement
+
+- [x] Set the requested questionnaire toggle sheet as the default assessment view.
+- [x] Correct all category and sub-area headings so they remain on one line without artificial spacing.
+- [x] Calculate and show each child’s percentage of scores 0 plus 1 for every analysis sub-area.
+- [x] Rank and gradient-highlight the five highest 0-plus-1 percentage grids for each child.
+- [x] Allow multiple analysis detail grids to remain expanded until each is clicked again.
+- [x] Display selected goals in ordered side-by-side columns for each child.
+- [x] Validate the default rating, percentage analysis, persistent detail, and goal comparison flows.
+
+## Percentage and Comparison Validation Notes
+
+- A fresh three-child assessment opens with the requested learning-adaptation sheet, 主題時間, and 遵守規則及指令 already expanded.
+- The previously broken group headings now render as one continuous label, including 上課時給予反應 and 與朋輩討論.
+- Test ratings of 0 and 1 have been entered for the first learning item in the first two child columns to validate the combined percentage calculation.
+- A contrasting score of 2 has been entered for the third child in the same item; the 0/1/2 test pattern is ready for analysis validation.
+- The analysis overview displays 100%, 100%, and 0% for the 0-plus-1 metric across the test row, with the two highest-need cells shown in the ranked gradient treatment.
+- Two child cells in the same overview row can remain expanded simultaneously, each retaining its own detailed rating and adjacent goal-selection control.
+- Selecting the same item for two children produces one ordered goal row with distinct child columns, making their shared target directly comparable.
+- The revised percentage overview exported successfully to a new Excel workbook.
+- A fresh assessment now opens with both （一）學習適應 and （二）社交適應 visible, while 主題時間、分組時間／功課時間, and all social second-level sheets remain collapsed as in the supplied screenshot.
+
 ## Current Revision
 
 - [x] Remove the home-page logo and simplify unselected rating buttons to white.
