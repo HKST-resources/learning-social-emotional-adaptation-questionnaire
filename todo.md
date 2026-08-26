@@ -1,5 +1,25 @@
 # Revision Checklist
 
+## Restored Expandable Analysis Grid
+
+- [x] Retain the current project version; no rollback to e022c982 is required.
+- [x] Default analysis to collapsed level-three mean-score grids, with only five lowest grids highlighted.
+- [x] Expand a pressed score grid into its detailed item ratings below the category columns.
+- [x] Narrow and centre children’s mean-score columns; remove individual detail-row tick controls.
+- [x] Toggle a whole grid as a training goal using a green border and translucent green selection effect.
+- [x] Apply alternating row backgrounds for each level-three category in analysis and the goal table.
+- [x] Validate expansion, grid selection, deselection, and selected-goal display.
+
+## Restored Expandable Analysis Validation Notes
+
+- The current project version remains active; a fresh three-child assessment opens successfully with both major domains visible and second-level sheets collapsed.
+- The first learning sub-level is open and ready for controlled three-child ratings to validate the collapsed analysis-grid workflow.
+- Test data now includes a completed score-two sub-level for child one and a score-zero item for child two, providing distinct mean-score cases for the analysis grid.
+- The analysis transition has been triggered with the controlled test ratings and is ready for collapsed-grid inspection.
+- The analysis initially shows only level-three mean-score cells; pressing the 遵守規則及指令 score grid expands its item-level rows beneath columns A and B while preserving the other level-three grids in their collapsed state.
+- Selecting child two’s detailed score grid replaces the former right-side tick with a green bordered, translucent-green score cell and adds the item to the grouped selected-goals table.
+- Pressing that selected grid again clears the green selection effect and removes the active goal while leaving the grouped goal row available for direct re-selection.
+
 ## Fixed Item and iPad Comparison Refinement
 
 - [x] Use alternating lavender and white surfaces to distinguish rating hierarchy levels and indent every third-level sheet.
