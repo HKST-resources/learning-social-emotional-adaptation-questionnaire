@@ -1,5 +1,12 @@
 # Revision Checklist
 
+## Final Analysis Copy and GitHub Delivery
+
+- [x] Change the analysis Excel export button to a white background.
+- [x] Remove the description beneath the analysis page title.
+- [x] Replace each summary-table description with the approved Chinese sentence.
+- [x] Validate the final production build and package copy-and-paste-ready GitHub source code.
+
 ## Prominent Selection and Item-Text Width Refinement
 
 - [x] Increase selected detailed-score borders and sharp green glow for unmistakable goal emphasis.
