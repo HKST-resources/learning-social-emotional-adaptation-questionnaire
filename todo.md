@@ -1,5 +1,22 @@
 # Revision Checklist
 
+## Reference-Aligned Expanded Detail Layout
+
+- [x] Remove the separate quick-jump bar and place relevant section-navigation buttons beside each main category title.
+- [x] Align expanded rating-item cards and every child’s score control on identical table rows and heights.
+- [x] Use short rounded score capsules that are visually distinct from mean-score rectangles.
+- [x] Place a selected goal tick at the right end of the detailed score capsule.
+- [x] Validate desktop, tablet, and compact-screen detail-row alignment and navigation.
+
+## Reference-Aligned Detail Validation Notes
+
+- A fresh three-child assessment is open after the table-alignment update and is ready for controlled expanded-detail validation.
+- The first learning group is open with rating controls available for a compact three-child analysis test.
+- A high completed mean for child one and a low item score for child two have been recorded for the aligned-detail analysis check.
+- The separate quick-jump bar is removed; each main category now carries its own adjacent context buttons, including 主題時間 and 分組時間／功課時間 beside （一）學習適應.
+- Expanded item text and all child score capsules now occupy corresponding fixed table rows and heights, matching the supplied word-document-style reference.
+- Selecting a detailed score displays a rounded green treatment with the score centred and a confirmation tick anchored at the capsule’s right end.
+
 ## Tied Priority and Goal Navigation Refinement
 
 - [x] Highlight every entered grid at or below each child’s fifth-lowest mean-score threshold, including tied fifth-score grids.
