@@ -1,5 +1,27 @@
 # Revision Checklist
 
+## Tied Priority and Goal Navigation Refinement
+
+- [x] Highlight every entered grid at or below each child’s fifth-lowest mean-score threshold, including tied fifth-score grids.
+- [x] Merge repeated level-two and level-three category cells in the analysis table.
+- [x] Make expanded item rows visually distinct and use compact round or square score controls.
+- [x] Add inline level-two jump buttons that reflect highlighted low-score areas.
+- [x] Split training-goal hierarchy into merged level-two and level-three columns.
+- [x] Remove fully unselected goal rows, restore linked goal navigation with automatic expansion, and add a clear-all-goals action.
+- [x] Validate tied highlighting, table structure, navigation, and reset behavior.
+
+## Tied Priority and Goal Navigation Validation Notes
+
+- A fresh three-child assessment has been opened for the final merged-hierarchy, category-jump, linked-goal, and clear-all-goals validation.
+- The first learning group is expanded with all child score controls available for the tied-priority test.
+- A high mean for child one and a low rating for child two have been entered to exercise the revised overview and training-goal interactions.
+- The refreshed analysis renders inline category jump buttons, a clear-all-goals control, and merged level-two cells in both learning and social overview tables.
+- Expanding a mean grid now nests high-contrast lavender item cards below the level-three label and presents compact round score controls in the corresponding child columns.
+- Selecting a detailed child score adds a three-column selected-goals table with separate merged 類別 and 小範疇 fields; collapsing the source area prepares the automatic re-expansion check.
+- Selecting the training-goal text returns to the source area and automatically re-expands its detailed rating rows.
+- The clear-all-goals action has been invoked for the final reset verification.
+- The reset clears the selected goal count to zero and removes the training-goal table; the previous goal text link correctly returned to and expanded its source item.
+
 ## Exact Five-Lowest Priority Refinement
 
 - [x] Limit gradient priority styling to each child’s five lowest entered mean scores only.
