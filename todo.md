@@ -1,5 +1,20 @@
 # Revision Checklist
 
+## Exact Five-Lowest Priority Refinement
+
+- [x] Limit gradient priority styling to each child’s five lowest entered mean scores only.
+- [x] Keep every non-priority scored grid and every unscored grid on a white background.
+- [x] Strengthen selected detailed rating grids with a thick green border, translucent green fill, and visible green tick by the score.
+- [x] Validate priority ranking and grid-selection feedback using multi-area ratings.
+
+## Exact Five-Lowest Validation Notes
+
+- A fresh three-child assessment is open for the final visual and interaction check of the global five-lowest rule and strengthened selected-score treatment.
+- The test sub-level is open with all three child columns available for controlled scoring before reopening analysis.
+- The final test now contains a high mean case for child one and a low mean case for child two, ready for global priority and selected-grid visual verification.
+- In the refreshed analysis, the only entered mean cells are the current global lowest values and receive the priority gradient, while all unscored cells remain white.
+- A selected child-two score-zero grid now visibly carries a thick green outline, translucent green surface, and green tick adjacent to its score.
+
 ## Restored Expandable Analysis Grid
 
 - [x] Retain the current project version; no rollback to e022c982 is required.

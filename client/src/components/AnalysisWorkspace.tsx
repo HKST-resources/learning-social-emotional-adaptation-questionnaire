@@ -66,7 +66,7 @@ function meanTone(isPriority: boolean, mean: number | undefined) {
     : "border-[#E0E3EF] bg-white text-[#535E88] hover:border-[#B1A9F2]";
 }
 
-function OverviewTable({ category, areas, childNames, ratings, scoreFilter, selectedGoals, onToggleGoal }: {
+function OverviewTable({ category, areas, childNames, ratings, scoreFilter, selectedGoals, onToggleGoal, lowestMeanAreaKeys }: {
   category: string;
   areas: SummaryArea[];
   childNames: string[];
@@ -74,13 +74,9 @@ function OverviewTable({ category, areas, childNames, ratings, scoreFilter, sele
   scoreFilter: Set<Rating>;
   selectedGoals: string[];
   onToggleGoal: (itemId: string, childIndex: number) => void;
+  lowestMeanAreaKeys: Set<string>[];
 }) {
   const [expandedAreaKeys, setExpandedAreaKeys] = useState<Set<string>>(new Set());
-  const lowestMeanAreaKeys = useMemo(() => childNames.map((_, childIndex) => new Set(
-    areas.filter((area) => area.scores[childIndex].average !== undefined)
-      .sort((left, right) => (left.scores[childIndex].average ?? Infinity) - (right.scores[childIndex].average ?? Infinity))
-      .slice(0, 5).map((area) => area.key),
-  )), [areas, childNames]);
   const toggleArea = (areaKey: string) => setExpandedAreaKeys((current) => {
     const next = new Set(current);
     if (next.has(areaKey)) next.delete(areaKey); else next.add(areaKey);
@@ -107,7 +103,7 @@ function OverviewTable({ category, areas, childNames, ratings, scoreFilter, sele
           </tr>
           {expanded && area.items.map((item, itemIndex) => <tr id={`analysis-item-${item.id}`} key={item.id} className={`border-b border-[#E7E9F1] last:border-b-0 ${rowTone}`}>
             <td colSpan={2} className="border-r border-[#E7E9F1] px-1 py-2 align-top sm:px-2"><div className="flex gap-1.5"><span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#F0EFFF] text-[9px] font-bold text-[#6557DB] sm:h-5 sm:w-5 sm:text-[10px]">{itemIndex + 1}</span><p className="text-[10px] leading-4 font-semibold text-[#394264] sm:text-[13px] sm:leading-5"><ItemText text={item.text} /></p></div></td>
-            {childNames.map((name, childIndex) => { const entry = ratings[goalKey(item.id, childIndex)]; const visible = entry?.score !== undefined && scoreFilter.has(entry.score); const selected = selectedGoals.includes(goalKey(item.id, childIndex)); return <td key={childIndex} className="border-r border-[#E7E9F1] p-0.5 align-middle text-center last:border-r-0 sm:p-1"><button type="button" disabled={!visible} onClick={() => onToggleGoal(item.id, childIndex)} aria-pressed={selected} aria-label={`${selected ? "取消" : "選擇"}${displayChildName(name, childIndex)} 的訓練目標：${item.text.split("\n")[0]}`} className={visible ? `flex min-h-8 w-full items-center justify-center rounded-md border text-[10px] font-extrabold transition active:scale-[0.94] sm:min-h-9 sm:text-[12px] ${selected ? "border-[#23A46F] bg-[#DDF7E9] text-[#15734D] shadow-[inset_0_0_0_999px_rgba(35,164,111,0.10)]" : quietRatingClass[entry.score as Rating]}` : "invisible min-h-8 w-full rounded-md border sm:min-h-9"}>{entry?.score ?? "—"}</button></td>; })}
+            {childNames.map((name, childIndex) => { const entry = ratings[goalKey(item.id, childIndex)]; const visible = entry?.score !== undefined && scoreFilter.has(entry.score); const selected = selectedGoals.includes(goalKey(item.id, childIndex)); return <td key={childIndex} className="border-r border-[#E7E9F1] p-0.5 align-middle text-center last:border-r-0 sm:p-1"><button type="button" disabled={!visible} onClick={() => onToggleGoal(item.id, childIndex)} aria-pressed={selected} aria-label={`${selected ? "取消" : "選擇"}${displayChildName(name, childIndex)} 的訓練目標：${item.text.split("\n")[0]}`} className={visible ? `flex min-h-8 w-full items-center justify-center gap-1 rounded-md border text-[10px] font-extrabold transition active:scale-[0.94] sm:min-h-9 sm:text-[12px] ${selected ? "border-[3px] border-[#14945C] bg-[#D8F7E7] text-[#087044] shadow-[inset_0_0_0_999px_rgba(38,191,111,0.16),0_0_0_2px_rgba(20,148,92,0.16)]" : quietRatingClass[entry.score as Rating]}` : "invisible min-h-8 w-full rounded-md border sm:min-h-9"}>{selected ? <><span>{entry?.score}</span><Check className="h-3.5 w-3.5 stroke-[3] sm:h-4 sm:w-4" /></> : entry?.score ?? "—"}</button></td>; })}
           </tr>)}
         </Fragment>; })}</tbody>
       </table>
@@ -140,6 +136,11 @@ export default function AnalysisWorkspace({ ratingDate, childNames, items, ratin
   const [goalItemsSeen, setGoalItemsSeen] = useState<string[]>([]);
   const areas = useMemo(() => buildAreaSummaries(items, childNames.length, ratings), [items, childNames.length, ratings]);
   const categories = useMemo(() => Array.from(new Set(areas.map((area) => area.category))), [areas]);
+  const lowestMeanAreaKeys = useMemo(() => childNames.map((_, childIndex) => new Set(
+    areas.filter((area) => area.scores[childIndex].average !== undefined)
+      .sort((left, right) => (left.scores[childIndex].average ?? Infinity) - (right.scores[childIndex].average ?? Infinity))
+      .slice(0, 5).map((area) => area.key),
+  )), [areas, childNames]);
   useEffect(() => { setGoalItemsSeen((current) => Array.from(new Set([...current, ...selectedGoals.map((key) => key.split("::")[0])]))); }, [selectedGoals]);
   const selectedGoalItems = useMemo(() => items.filter((item) => goalItemsSeen.includes(item.id) || childNames.some((_, childIndex) => selectedGoals.includes(goalKey(item.id, childIndex)))), [items, childNames, goalItemsSeen, selectedGoals]);
   const toggleFilter = (score: Rating) => setScoreFilter((current) => { const next = new Set(current); if (next.has(score)) next.delete(score); else next.add(score); return next; });
@@ -149,7 +150,7 @@ export default function AnalysisWorkspace({ ratingDate, childNames, items, ratin
     <header className="border-b border-[#E8E9F5] bg-white px-4 py-4 sm:px-7"><div className="mx-auto flex max-w-[1700px] flex-wrap items-center justify-between gap-3"><button type="button" onClick={onBack} className="inline-flex items-center gap-2 rounded-xl border border-[#D8DBEE] bg-white px-3 py-2 text-[13px] font-bold text-[#4B5482] transition hover:border-[#7D89FF] hover:bg-[#F6F7FF] active:scale-[0.98]"><ArrowLeft className="h-4 w-4" />返回評分表</button><div className="flex items-center gap-2 text-[12px] font-medium text-[#68709A]"><span>{ratingDate}</span><span className="h-4 w-px bg-[#D9DCEC]" /><span>{childNames.length} 位兒童</span></div></div></header>
     <main className="mx-auto max-w-[1700px] px-3 pb-10 pt-5 sm:px-6 sm:pt-8"><section className="relative overflow-hidden rounded-[24px] bg-[linear-gradient(120deg,#6D5DFB_0%,#9978FF_44%,#F96EA5_100%)] px-5 py-6 text-white shadow-[0_18px_44px_rgba(109,93,251,0.23)] sm:px-7 sm:py-7"><div className="pointer-events-none absolute -right-8 -top-16 h-48 w-48 rounded-full border-[22px] border-white/20" /><div className="relative flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between"><div><h1 className="text-[30px] font-bold tracking-tight sm:text-[38px]">各兒童表現分析</h1><p className="mt-2 max-w-2xl text-[15px] leading-6 text-white/88">所有評分項目固定排列，方便橫向比較；每位兒童最低五個小範疇平均分數以漸變色標示。</p></div><div className="flex flex-wrap gap-2"><button type="button" onClick={() => window.print()} className="inline-flex h-10 items-center gap-2 rounded-xl bg-white px-4 text-[13px] font-bold text-[#5B50D8] transition hover:bg-[#F5F4FF] active:scale-[0.98]"><Printer className="h-4 w-4" />PDF 報告</button><button type="button" onClick={onExportExcel} className="inline-flex h-10 items-center gap-2 rounded-xl border border-white/40 bg-white/10 px-4 text-[13px] font-bold text-white transition hover:bg-white/20 active:scale-[0.98]"><FileSpreadsheet className="h-4 w-4" />Excel 報告</button></div></div></section>
       <section className="mt-5 flex flex-col gap-4 rounded-2xl border border-[#E7E8F3] bg-white p-4 shadow-[0_8px_24px_rgba(42,45,88,0.06)] sm:flex-row sm:items-center sm:justify-between"><div className="flex items-center gap-2 text-[13px] font-bold text-[#404A78]"><span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#F0EFFF] text-[#6D5DFB]"><Filter className="h-4 w-4" /></span>篩選固定項目的分數</div><div className="flex flex-wrap gap-2">{([0, 1, 2] as Rating[]).map((score) => <button key={score} type="button" onClick={() => toggleFilter(score)} aria-pressed={scoreFilter.has(score)} className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-[13px] font-bold transition ${scoreFilter.has(score) ? quietRatingClass[score] : "border-[#E4E6EF] bg-white text-[#A0A6BB]"}`}><span className={`flex h-4 w-4 items-center justify-center rounded border ${scoreFilter.has(score) ? filterClass[score] : "border-[#C7CDDD] bg-white text-transparent"}`}><Check className="h-3 w-3" /></span>{score}</button>)}</div></section>
-      {categories.map((category) => <OverviewTable key={category} category={category} areas={areas.filter((area) => area.category === category)} childNames={childNames} ratings={ratings} scoreFilter={scoreFilter} selectedGoals={selectedGoals} onToggleGoal={onToggleGoal} />)}
+      {categories.map((category) => <OverviewTable key={category} category={category} areas={areas.filter((area) => area.category === category)} childNames={childNames} ratings={ratings} scoreFilter={scoreFilter} selectedGoals={selectedGoals} onToggleGoal={onToggleGoal} lowestMeanAreaKeys={lowestMeanAreaKeys} />)}
       <section className="mt-7 rounded-2xl border border-[#E0E3EF] bg-[#FCFCFF] p-3 sm:p-5"><div className="flex items-center justify-between gap-3"><div><p className="text-[12px] font-bold tracking-[0.11em] text-[#837CA9]">訓練目標</p><h2 className="mt-1 text-[20px] font-bold text-[#30395F]">已選訓練目標</h2></div><span className="rounded-lg bg-[#E9E7FF] px-3 py-2 text-[12px] font-bold text-[#5C50D5]">{selectedGoals.length} 項</span></div>{selectedGoalItems.length ? <SelectedGoalsTable selectedGoalItems={selectedGoalItems} childNames={childNames} selectedGoals={selectedGoals} onToggleGoal={onToggleGoal} onJumpToItem={jumpToItem} /> : <p className="mt-3 text-[13px] text-[#838AAA]">直接在上方固定評分列的綠色方格，加入個別兒童的訓練目標。</p>}</section>
     </main>
   </div>;
