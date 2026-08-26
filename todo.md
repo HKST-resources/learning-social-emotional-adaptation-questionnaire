@@ -1,5 +1,11 @@
 # Revision Checklist
 
+## Prominent Selection and Item-Text Width Refinement
+
+- [x] Increase selected detailed-score borders and sharp green glow for unmistakable goal emphasis.
+- [x] Give expanded rating-item text more landscape-table width while narrowing numerical child score columns.
+- [x] Validate the selected state and iPad landscape comparison layout without unnecessary horizontal scrolling.
+
 ## Selected Score, iPad, and Reusable Skill Refinement
 
 - [x] Preserve pink, yellow, and green score backgrounds after goal selection while adding a sharp green glow and tick.
@@ -14,6 +20,7 @@
 - A score of 1 has been entered for child two’s first item and analysis has been opened to verify that selecting it keeps the yellow score background.
 - The child-two mean grid is expanded and displays the score-one detailed capsule in its aligned item row.
 - Selecting the score-one capsule keeps its yellow surface while adding a sharp green outline, green glow, and right-end green tick; iPad-landscape width is now assigned first to the hierarchy columns and then shared among child columns.
+- The final selected state uses a four-pixel sharp green border with an expanded glow ring while retaining the score-specific capsule background; production type and build checks pass after the iPad landscape width adjustment.
 
 ## Reference-Aligned Expanded Detail Layout
 
