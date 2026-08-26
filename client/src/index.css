@@ -1,4 +1,4 @@
-/* Design reminder — Clinical Stationery Atelier: warm paper, editorial type, Observation Jade, ledger-like comparison surfaces. */
+/* Design reminder — Bright Clinical Studio: white assessment surfaces, larger clinical text, and controlled violet-to-pink energy. */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&family=Noto+Serif+TC:wght@500;600;700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
@@ -84,7 +84,7 @@
 
 * { border-color: var(--border); }
 html { scroll-behavior: smooth; }
-body { margin: 0; min-width: 320px; background: #F4F1EA; color: #233834; font-family: "Noto Sans TC", ui-sans-serif, system-ui, sans-serif; }
+body { margin: 0; min-width: 320px; background: #FFFFFF; color: #273054; font-family: "Noto Sans TC", ui-sans-serif, system-ui, sans-serif; font-size: 16px; }
 button, input, textarea { font: inherit; }
 button:not(:disabled), [role="button"]:not([aria-disabled="true"]), input:not(:disabled), textarea:not(:disabled) { cursor: pointer; }
 textarea { cursor: text; }
@@ -109,9 +109,25 @@ textarea { cursor: text; }
 .ledger-input:focus { border-bottom-color: #145B58; box-shadow: inset 0 1px 0 rgba(20,91,88,0.10), 0 5px 0 -3px rgba(20,91,88,0.18); }
 .ring-stage::after { position: absolute; right: 19%; top: 50%; width: 6px; height: 6px; border-radius: 999px; background: #76A492; box-shadow: 14px -12px 0 rgba(118,164,146,0.40), 27px 8px 0 rgba(118,164,146,0.25); content: ""; opacity: 0.9; }
 
+.bright-input {
+  border: 1px solid #DDE0F0;
+  border-radius: 0.75rem;
+  background: #FFFFFF;
+  color: #303A66;
+  outline: none;
+  box-shadow: 0 2px 0 rgba(89, 76, 198, 0.03);
+  transition: border-color 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.bright-input:hover { border-color: #BDB7FF; }
+.bright-input:focus { border-color: #796BFF; box-shadow: 0 0 0 4px rgba(121, 107, 255, 0.12); }
+
+/* The main questionnaire title is intentionally document-led rather than app-led. */
+.screen-ui h1 { font-family: "Noto Serif TC", ui-serif, Georgia, serif; letter-spacing: 0.01em; }
+.screen-ui img[alt="兒童發展觀察標誌"] { box-shadow: 0 6px 18px rgba(38, 44, 95, 0.12); }
+
 .comparison-scroll::-webkit-scrollbar { height: 10px; }
-.comparison-scroll::-webkit-scrollbar-track { background: #EDF1ED; }
-.comparison-scroll::-webkit-scrollbar-thumb { border: 3px solid #EDF1ED; border-radius: 999px; background: #91AAA0; }
+.comparison-scroll::-webkit-scrollbar-track { background: #F2F3FA; }
+.comparison-scroll::-webkit-scrollbar-thumb { border: 3px solid #F2F3FA; border-radius: 999px; background: #A59DFF; }
 
 @media (prefers-reduced-motion: no-preference) {
   .section-row, .context-row, .comparison-scroll tbody tr { animation: rise-in 180ms cubic-bezier(0.23, 1, 0.32, 1) both; }
@@ -121,24 +137,24 @@ textarea { cursor: text; }
 
 @media print {
   @page { size: A4; margin: 13mm; }
-  body { background: #fff !important; color: #182C28 !important; font-family: "Noto Sans TC", sans-serif !important; font-size: 10pt; }
+  body { background: #fff !important; color: #222948 !important; font-family: "Noto Sans TC", sans-serif !important; font-size: 10pt; }
   .screen-ui { display: none !important; }
   .print-report { display: block !important; color: #182C28; }
-  .print-report header { border-bottom: 2px solid #145B58; padding-bottom: 10px; }
-  .print-report header > p { margin: 0; color: #35665C; font-size: 9pt; font-weight: 700; letter-spacing: .12em; }
-  .print-report h1 { margin: 5px 0 8px; color: #164A46; font-family: "Noto Serif TC", serif; font-size: 22pt; }
-  .print-meta { display: flex; gap: 24px; flex-wrap: wrap; color: #4C655E; font-size: 9pt; }
+  .print-report header { border-bottom: 2px solid #6D5DFB; padding-bottom: 10px; }
+  .print-report header > p { margin: 0; color: #6558C8; font-size: 9pt; font-weight: 700; letter-spacing: .12em; }
+  .print-report h1 { margin: 5px 0 8px; color: #323A68; font-family: "Noto Serif TC", serif; font-size: 22pt; }
+  .print-meta { display: flex; gap: 24px; flex-wrap: wrap; color: #626B94; font-size: 9pt; }
   .print-section { break-inside: avoid; margin-top: 18px; }
-  .print-section h2 { border-left: 4px solid #145B58; margin: 0 0 9px; padding-left: 8px; color: #164A46; font-family: "Noto Serif TC", serif; font-size: 15pt; }
-  .print-section h3 { margin: 0 0 5px; color: #235A50; font-size: 11pt; }
-  .print-section h4 { margin: 9px 0 4px; color: #45645B; font-size: 9.5pt; }
+  .print-section h2 { border-left: 4px solid #6D5DFB; margin: 0 0 9px; padding-left: 8px; color: #323A68; font-family: "Noto Serif TC", serif; font-size: 15pt; }
+  .print-section h3 { margin: 0 0 5px; color: #5145C7; font-size: 11pt; }
+  .print-section h4 { margin: 9px 0 4px; color: #596287; font-size: 9.5pt; }
   .print-section p, .print-section li { line-height: 1.6; }
   .print-section ol { margin: 5px 0; padding-left: 20px; }
   .print-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-  .print-columns > div { border: 1px solid #C9D8D0; padding: 10px; }
-  .print-child { break-inside: avoid; border: 1px solid #D8E2DC; margin: 8px 0; padding: 10px; }
+  .print-columns > div { border: 1px solid #D6D7EB; padding: 10px; }
+  .print-child { break-inside: avoid; border: 1px solid #D9DAE9; margin: 8px 0; padding: 10px; }
   .print-report table { width: 100%; border-collapse: collapse; font-size: 8pt; }
-  .print-report th, .print-report td { border: 1px solid #BFCFC7; padding: 5px; text-align: left; vertical-align: top; line-height: 1.45; }
-  .print-report th { background: #EAF2ED !important; color: #244F47; font-weight: 700; }
+  .print-report th, .print-report td { border: 1px solid #C9CBE0; padding: 5px; text-align: left; vertical-align: top; line-height: 1.45; }
+  .print-report th { background: #F0EFFF !important; color: #45408E; font-weight: 700; }
   .print-report tr { break-inside: avoid; }
 }

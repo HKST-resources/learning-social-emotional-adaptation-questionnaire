@@ -69,3 +69,5 @@ The wordmark is paired with a compact, text-free compass mark composed of three 
 - The working area should read as a clinical ledger surface first and an application form second; field rules, grouping, labels, and controls are treated as precise annotations on paper.
 - The compass-with-speech-arcs mark is the primary identity signature wherever the workspace is introduced. It remains paired with the wordmark and should never recede into generic decoration.
 - Grouped rings represent children converging toward shared goals. They recur only at major setup, comparison, and analysis transitions, rather than as arbitrary background ornament.
+- The revised workflow uses a white clinical workspace with colourful, clear gradient transitions requested for energy and wayfinding. Gradients are confined to major workflow markers and never used behind assessment text.
+- The document title and key workflow labels use Noto Serif TC; form content uses Noto Sans TC for small-screen clarity and dense clinical comparison.

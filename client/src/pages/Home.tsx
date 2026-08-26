@@ -16,8 +16,9 @@ import {
   UsersRound,
 } from "lucide-react";
 import { toast } from "sonner";
+import RevisedHome from "./RevisedHome";
 
-type Rating = 0 | 1 | 2;
+export type Rating = 0 | 1 | 2;
 
 type QuestionnaireItem = {
   id: string;
@@ -39,7 +40,7 @@ type QuestionnaireSection = {
   contexts: QuestionnaireContext[];
 };
 
-type ItemWithContext = QuestionnaireItem & {
+export type ItemWithContext = QuestionnaireItem & {
   category: string;
   context: string;
   group: string;
@@ -50,7 +51,7 @@ type RatingEntry = {
   remark: string;
 };
 
-type RatingData = Record<string, RatingEntry>;
+export type RatingData = Record<string, RatingEntry>;
 
 const ratingDefinitions: { score: Rating; short: string; description: string }[] = [
   { score: 2, short: "2", description: "時常做到" },
@@ -59,7 +60,7 @@ const ratingDefinitions: { score: Rating; short: string; description: string }[]
 ];
 
 /** The following item bank reproduces the uploaded Word document verbatim. */
-const questionnaire: QuestionnaireSection[] = [
+export const questionnaire: QuestionnaireSection[] = [
   {
     title: "（一）學習適應",
     contexts: [
@@ -353,13 +354,13 @@ const flattenQuestionnaire = (): ItemWithContext[] =>
     ),
   );
 
-const allItems = flattenQuestionnaire();
+export const allItems = flattenQuestionnaire();
 
-function childLabel(name: string, index: number) {
+export function childLabel(name: string, index: number) {
   return name.trim() || `兒童 ${index + 1}`;
 }
 
-function entryKey(itemId: string, childIndex: number) {
+export function entryKey(itemId: string, childIndex: number) {
   return `${itemId}::${childIndex}`;
 }
 
@@ -370,7 +371,7 @@ function scoreTone(score?: Rating) {
   return "border-[#D8DDDA] bg-white text-[#94A19B]";
 }
 
-function scoreText(score?: Rating) {
+export function scoreText(score?: Rating) {
   if (score === 0) return "未能做到";
   if (score === 1) return "有時或支援下做到";
   if (score === 2) return "時常做到";
@@ -421,7 +422,7 @@ function AnalysisItem({ item, className }: { item: ItemWithContext; className: s
   );
 }
 
-export default function Home() {
+function LegacyHome() {
   const [ratingDate, setRatingDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [groupSize, setGroupSize] = useState(3);
   const [childNames, setChildNames] = useState(["", "", ""]);
@@ -795,3 +796,5 @@ function PrintableReport({ ratingDate, childNames, ratings, individualAnalysis, 
     </article>
   );
 }
+
+export default RevisedHome;
