@@ -1,5 +1,24 @@
 # Revision Checklist
 
+## Fixed Item and iPad Comparison Refinement
+
+- [x] Use alternating lavender and white surfaces to distinguish rating hierarchy levels and indent every third-level sheet.
+- [x] Restore fixed detailed rating-item rows directly under each child in the analysis comparison tables.
+- [x] Round all mean-score display and exports to two decimal places.
+- [x] Highlight only each child’s five lowest mean-score cells with the vibrant gradient treatment; keep all other cells white.
+- [x] Optimise rating, analysis, and selected-goal tables to prioritise all child columns across iPad and compact screens.
+- [x] Keep selected training goals concise and visible as a one-sentence item while retaining child columns.
+- [x] Validate responsive rating, analysis, goal-table, and report views.
+
+## Fixed Item and iPad Comparison Validation Notes
+
+- The initial rating view now shows major domains on white surfaces, level-two contexts on light lavender surfaces, and the hierarchy is ready for third-level indentation testing.
+- The third-level sheet is visibly indented beneath 主題時間 and shows all three child columns together, using alternating white and lavender child-column backgrounds.
+- The tightened rating grid keeps the item text and all three child columns visible together in the test view while retaining compact score and remarks controls.
+- The rebuilt analysis keeps every rating item in a fixed horizontal row under the child columns, displays means as 2.00 and 0.00, and marks the two test children’s lowest sub-area mean cells with the same violet-to-pink gradient while leaving the unscored grid white.
+- Turning off score 2 hides only child-one score-two content while retaining each rating item’s fixed row; selecting child-two’s score-zero item creates the compact grouped goal row with all child columns retained.
+- The iPad portrait setup screen remains readable, and the live rating and analysis tests preserve all three child columns without horizontal overflow.
+
 ## Mean Score and Goal-Table Refinement
 
 - [x] Visually differentiate the first and second levels of the rating toggle hierarchy.
