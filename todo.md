@@ -1,5 +1,20 @@
 # Revision Checklist
 
+## Selected Score, iPad, and Reusable Skill Refinement
+
+- [x] Preserve pink, yellow, and green score backgrounds after goal selection while adding a sharp green glow and tick.
+- [x] Optimise expanded analysis table widths for iPad landscape without horizontal scrolling.
+- [x] Create, validate, and package a reusable clinical group-therapy analysis workflow skill.
+- [x] Validate selected score states and iPad landscape layout.
+
+## Selected Score and iPad Validation Notes
+
+- A fresh three-child assessment is open for a visual confirmation that selected detailed scores retain their original 0/1/2 colour coding.
+- The first learning sub-area is expanded with all child rating controls ready for the selected-score visual-state check.
+- A score of 1 has been entered for child two’s first item and analysis has been opened to verify that selecting it keeps the yellow score background.
+- The child-two mean grid is expanded and displays the score-one detailed capsule in its aligned item row.
+- Selecting the score-one capsule keeps its yellow surface while adding a sharp green outline, green glow, and right-end green tick; iPad-landscape width is now assigned first to the hierarchy columns and then shared among child columns.
+
 ## Reference-Aligned Expanded Detail Layout
 
 - [x] Remove the separate quick-jump bar and place relevant section-navigation buttons beside each main category title.
