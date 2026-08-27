@@ -168,4 +168,37 @@ main > section:first-child button.bg-white\/10:hover { background-color: #F5F4FF
   .print-report th, .print-report td { border: 1px solid #C9CBE0; padding: 5px; text-align: left; vertical-align: top; line-height: 1.45; }
   .print-report th { background: #F0EFFF !important; color: #45408E; font-weight: 700; }
   .print-report tr { break-inside: avoid; }
+
+  /* Analysis print/PDF: use the whole landscape page and never clip scrollable comparison tables. */
+  @page { size: A4 landscape; margin: 8mm; }
+  .analysis-print-root { min-height: 0 !important; color: #20264A !important; }
+  .analysis-print-root > header,
+  .analysis-hero button,
+  .analysis-controls,
+  .analysis-goals button { display: none !important; }
+  .analysis-print-root main { max-width: none !important; padding: 0 !important; }
+  .analysis-hero { overflow: visible !important; margin: 0 0 9pt !important; padding: 0 !important; background: transparent !important; box-shadow: none !important; color: #27315A !important; }
+  .analysis-hero h1 { margin: 0 !important; color: #27315A !important; font-family: "Noto Serif TC", serif !important; font-size: 19pt !important; }
+  .analysis-category { break-inside: auto !important; margin-top: 10pt !important; }
+  .analysis-category > div:first-child { margin-bottom: 4pt !important; }
+  .analysis-category > div:first-child p,
+  .analysis-category > div:first-child button { display: none !important; }
+  .analysis-category h2 { margin: 0 !important; color: #353C68 !important; font-family: "Noto Serif TC", serif !important; font-size: 14pt !important; }
+  .analysis-category > p { margin: 0 0 5pt !important; color: #626B94 !important; font-size: 7.5pt !important; }
+  .analysis-print-root .comparison-scroll { overflow: visible !important; border: 1px solid #BFC4D8 !important; border-radius: 0 !important; box-shadow: none !important; break-inside: auto !important; }
+  .analysis-print-root .comparison-scroll table { width: 100% !important; min-width: 0 !important; table-layout: fixed !important; font-size: 7.5pt !important; }
+  .analysis-print-root .comparison-scroll thead { display: table-header-group !important; }
+  .analysis-print-root .comparison-scroll tr { break-inside: avoid !important; page-break-inside: avoid !important; }
+  .analysis-print-root .comparison-scroll th,
+  .analysis-print-root .comparison-scroll td { width: auto !important; padding: 3px !important; overflow: visible !important; word-break: break-word !important; overflow-wrap: anywhere !important; }
+  .analysis-print-root .comparison-scroll th:nth-child(1),
+  .analysis-print-root .comparison-scroll td:nth-child(1) { width: 9% !important; }
+  .analysis-print-root .comparison-scroll th:nth-child(2),
+  .analysis-print-root .comparison-scroll td:nth-child(2) { width: 35% !important; }
+  .analysis-print-root .comparison-scroll button { min-height: 24px !important; height: auto !important; box-shadow: none !important; }
+  .analysis-print-root .analysis-detail-row { background: #F4F2FF !important; }
+  .analysis-print-root .analysis-detail-row td { background: #F4F2FF !important; }
+  .analysis-goals { break-before: page !important; page-break-before: always !important; margin-top: 0 !important; border: 0 !important; background: transparent !important; padding: 0 !important; }
+  .analysis-goals > div:first-child { margin-bottom: 5pt !important; }
+  .analysis-goals p { color: #626B94 !important; }
 }
