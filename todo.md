@@ -1,5 +1,11 @@
 # Revision Checklist
 
+## GitHub Pages Root-Route Fix
+
+- [ ] Configure client-side routing to recognise the repository subdirectory on GitHub Pages.
+- [ ] Push the routing fix and redeploy the Pages website.
+- [ ] Verify the public website opens the assessment form rather than the 404 page.
+
 ## GitHub Pages Publication
 
 - [x] Configure the static build for the repository website path.
