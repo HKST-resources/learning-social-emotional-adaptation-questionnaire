@@ -206,6 +206,9 @@ function vitePluginStorageProxy(): Plugin {
 const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector(), vitePluginStorageProxy()];
 
 export default defineConfig({
+  // GitHub Pages serves this project beneath the repository name, while Manus
+  // development and production previews continue to use the site root.
+  base: process.env.GITHUB_ACTIONS ? "/learning-social-emotional-adaptation-questionnaire/" : "/",
   plugins,
   resolve: {
     alias: {

@@ -1,5 +1,11 @@
 # Revision Checklist
 
+## GitHub Pages Publication
+
+- [x] Configure the static build for the repository website path.
+- [x] Add a GitHub Actions workflow that publishes the static site to Pages.
+- [ ] Enable GitHub Pages from the workflow and verify the public website link.
+
 ## GitHub Repository Publication
 
 - [x] Prepare the approved source tree for the private GitHub repository.
