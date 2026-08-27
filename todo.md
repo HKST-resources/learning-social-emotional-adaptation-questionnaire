@@ -2,9 +2,9 @@
 
 ## GitHub Repository Publication
 
-- [ ] Prepare the approved source tree for the private GitHub repository.
-- [ ] Create the private repository learning-social-emotional-adaptation-questionnaire.
-- [ ] Push the final project source to the repository and verify its contents.
+- [x] Prepare the approved source tree for the private GitHub repository.
+- [x] Create the private repository learning-social-emotional-adaptation-questionnaire.
+- [x] Push the final project source to the repository and verify its contents.
 
 ## Overview PDF Two-Page Layout
 
