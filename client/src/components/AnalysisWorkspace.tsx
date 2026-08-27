@@ -170,6 +170,38 @@ const printScopeMeta: Record<PrintScope, { buttonLabel: string; printTitle: stri
   complete: { buttonLabel: "完整評估及訓練目標", printTitle: "完整評估及訓練目標" },
 };
 
+function escapeReportHtml(value: string) {
+  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;").replace(/\n/g, "<br />");
+}
+
+function scoreCell(score: Rating | undefined) {
+  if (score === undefined) return '<td class="score empty">—</td>';
+  return `<td class="score score-${score}">${score}</td>`;
+}
+
+function printableOverview(category: string, areas: SummaryArea[], childNames: string[], ratings: AnalysisRatingData, expandedKeys: Set<string>, scope: PrintScope) {
+  const includeDetails = scope === "complete";
+  const rows = areas.map((area) => {
+    const summaryCells = area.scores.map((score) => `<td class="mean">${score.average === undefined ? "—" : score.average.toFixed(2)}</td>`).join("");
+    const details = includeDetails && expandedKeys.has(area.key) ? area.items.map((item, index) => `<tr class="detail-row"><td></td><td><span class="item-number">${index + 1}</span>${escapeReportHtml(item.text)}</td>${childNames.map((_, childIndex) => scoreCell(ratings[goalKey(item.id, childIndex)]?.score)).join("")}</tr>`).join("") : "";
+    return `<tr class="summary-row"><td>${escapeReportHtml(cleanHeading(area.context))}</td><td>${escapeReportHtml(cleanHeading(area.group))}</td>${summaryCells}</tr>${details}`;
+  }).join("");
+  return `<section class="report-section"><h2>${escapeReportHtml(category)}</h2><p>格內數字為小範疇平均分數。${includeDetails ? "已展開的小範疇會附上詳細評分。" : ""}</p><table><thead><tr><th>類別</th><th>小範疇</th>${childNames.map((name, index) => `<th>${escapeReportHtml(displayChildName(name, index))}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table></section>`;
+}
+
+function printableGoals(selectedGoalItems: AnalysisItem[], childNames: string[], selectedGoals: string[]) {
+  if (!selectedGoalItems.length) return '<section class="report-section goals-section"><h2>已選訓練目標</h2><p>尚未選取訓練目標。</p></section>';
+  const rows = selectedGoalItems.map((item) => `<tr><td>${escapeReportHtml(cleanHeading(item.context))}</td><td>${escapeReportHtml(cleanHeading(item.group))}</td><td>${escapeReportHtml(item.text)}</td>${childNames.map((_, childIndex) => `<td class="goal-mark">${selectedGoals.includes(goalKey(item.id, childIndex)) ? "✓" : ""}</td>`).join("")}</tr>`).join("");
+  return `<section class="report-section goals-section"><h2>已選訓練目標</h2><table><thead><tr><th>類別</th><th>小範疇</th><th>訓練目標</th>${childNames.map((name, index) => `<th>${escapeReportHtml(displayChildName(name, index))}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table></section>`;
+}
+
+function buildPrintableReport({ scope, ratingDate, childNames, areas, ratings, expandedKeys, selectedGoalItems, selectedGoals }: { scope: PrintScope; ratingDate: string; childNames: string[]; areas: SummaryArea[]; ratings: AnalysisRatingData; expandedKeys: Set<string>; selectedGoalItems: AnalysisItem[]; selectedGoals: string[] }) {
+  const categories = Array.from(new Set(areas.map((area) => area.category)));
+  const overview = scope === "goals" ? "" : categories.map((category) => printableOverview(category, areas.filter((area) => area.category === category), childNames, ratings, expandedKeys, scope)).join("");
+  const goals = printableGoals(selectedGoalItems, childNames, selectedGoals);
+  return `<!doctype html><html lang="zh-HK"><head><meta charset="utf-8" /><title>${escapeReportHtml(printScopeMeta[scope].printTitle)}</title><style>@page{size:A4 landscape;margin:8mm}*{box-sizing:border-box}body{margin:0;color:#252A48;font-family:"Noto Sans TC","PingFang TC",sans-serif;font-size:9pt}header{border-bottom:2px solid #765EEF;margin-bottom:12px;padding-bottom:8px}h1{margin:0;color:#323A68;font-family:"Noto Serif TC",serif;font-size:20pt}header p{margin:4px 0 0;color:#69729A}.report-section{break-inside:auto;page-break-inside:auto;margin:16px 0}.report-section h2{break-after:avoid;page-break-after:avoid;margin:0 0 5px;padding-left:8px;border-left:4px solid #765EEF;color:#394274;font-size:14pt}.report-section p{margin:0 0 7px;color:#6E7698;font-size:8pt}table{width:100%;border-collapse:collapse;table-layout:fixed;break-inside:auto}thead{display:table-header-group}tr{break-inside:avoid;page-break-inside:avoid}th,td{border:1px solid #CAD0DF;padding:4px;vertical-align:top;overflow-wrap:anywhere;word-break:break-word;line-height:1.38}th{background:#F1F0FF;color:#465081;font-weight:700;text-align:left}th:first-child,td:first-child{width:11%}th:nth-child(2),td:nth-child(2){width:30%}td.mean,.score,.goal-mark{text-align:center;vertical-align:middle;font-weight:800}.summary-row:nth-child(4n+1) td{background:#FBFAFF}.detail-row td{background:#F5F3FF;color:#433D83}.detail-row td:first-child{background:#EFEAFF}.item-number{display:inline-flex;width:15px;height:15px;align-items:center;justify-content:center;margin-right:4px;border-radius:50%;background:#7465E9;color:#fff;font-size:7pt;font-weight:700}.score{border-radius:0}.score-0{background:#FFF0F2;color:#BA3A50}.score-1{background:#FFF7D9;color:#9A6800}.score-2{background:#EDFCF4;color:#137D59}.empty{color:#AAB1C6}.goal-mark{color:#13945F;font-size:13pt}.goals-section{break-before:page;page-break-before:always}.goals-section h2{color:#217257}@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body><header><h1>${escapeReportHtml(printScopeMeta[scope].printTitle)}</h1><p>評估日期：${escapeReportHtml(ratingDate)}　｜　${childNames.length} 位兒童</p></header>${overview}${goals}</body></html>`;
+}
+
 type OverviewTableProps = {
   category: string;
   sectionId: string;
@@ -297,8 +329,6 @@ export default function AnalysisWorkspace({ ratingDate, childNames, items, ratin
   const [scoreFilter, setScoreFilter] = useState<Set<Rating>>(new Set<Rating>([0, 1, 2]));
   const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set());
   const [searchTerm, setSearchTerm] = useState("");
-  const [printScope, setPrintScope] = useState<PrintScope>("complete");
-  const [pendingPrintScope, setPendingPrintScope] = useState<PrintScope | null>(null);
   const areas = useMemo(() => buildAreaSummaries(items, childNames.length, ratings), [items, childNames.length, ratings]);
   const searchQuery = normaliseSearch(searchTerm);
   const highlightedChildIndices = useMemo(() => new Set(childNames.map((name, index) => ({ name: displayChildName(name, index), index })).filter(({ name }) => includesQuery(name, searchQuery) && Boolean(searchQuery)).map(({ index }) => index)), [childNames, searchQuery]);
@@ -339,23 +369,23 @@ export default function AnalysisWorkspace({ ratingDate, childNames, items, ratin
     window.setTimeout(() => document.getElementById(`analysis-item-${itemId}`)?.scrollIntoView({ behavior: "smooth", block: "center" }), 90);
   };
   const startPdfExport = (scope: PrintScope) => {
-    setPrintScope(scope);
-    setPendingPrintScope(scope);
+    const reportWindow = window.open("", "_blank", "width=1280,height=900");
+    if (!reportWindow) {
+      window.alert("無法開啟列印視窗，請允許此網站開啟彈出式視窗後再試一次。");
+      return;
+    }
+    reportWindow.document.write(buildPrintableReport({ scope, ratingDate, childNames, areas, ratings, expandedKeys, selectedGoalItems, selectedGoals }));
+    reportWindow.document.close();
+    window.setTimeout(() => {
+      reportWindow.focus();
+      reportWindow.print();
+    }, 180);
   };
 
-  useEffect(() => {
-    if (!pendingPrintScope) return;
-    const printTimer = window.setTimeout(() => {
-      window.print();
-      setPendingPrintScope(null);
-    }, 120);
-    return () => window.clearTimeout(printTimer);
-  }, [pendingPrintScope, printScope]);
-
-  return <div className={`analysis-print-root print-scope-${printScope} min-h-screen bg-white text-[#20264A]`}>
+  return <div className="analysis-print-root min-h-screen bg-white text-[#20264A]">
     <header className="border-b border-[#E8E9F5] bg-white px-4 py-4 sm:px-7"><div className="mx-auto flex max-w-[1700px] flex-wrap items-center justify-between gap-3"><button type="button" onClick={onBack} className="inline-flex items-center gap-2 rounded-xl border border-[#D8DBEE] bg-white px-3 py-2 text-[13px] font-bold text-[#4B5482] transition hover:border-[#7D89FF] hover:bg-[#F6F7FF] active:scale-[0.98]"><ArrowLeft className="h-4 w-4" />返回評分表</button><div className="flex items-center gap-2 text-[12px] font-medium text-[#68709A]"><span>{ratingDate}</span><span className="h-4 w-px bg-[#D9DCEC]" /><span>{childNames.length} 位兒童</span></div></div></header>
     <main className="mx-auto max-w-[1700px] px-3 pb-10 pt-5 sm:px-6 sm:pt-8">
-      <section className="analysis-hero relative overflow-hidden rounded-[24px] bg-[linear-gradient(120deg,#6D5DFB_0%,#9978FF_44%,#F96EA5_100%)] px-5 py-6 text-white shadow-[0_18px_44px_rgba(109,93,251,0.23)] sm:px-7 sm:py-7"><div className="pointer-events-none absolute -right-8 -top-16 h-48 w-48 rounded-full border-[22px] border-white/20" /><div className="relative flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between"><h1 className="text-[30px] font-bold tracking-tight sm:text-[38px]"><span className="screen-analysis-title">各兒童表現分析</span><span className="print-analysis-title">{printScopeMeta[printScope].printTitle}</span></h1><div className="analysis-export-actions flex flex-wrap gap-2"><div className="analysis-pdf-actions flex flex-wrap gap-2"><p className="w-full text-[11px] font-bold tracking-[0.08em] text-white/85">PDF 匯出範圍</p>{(Object.keys(printScopeMeta) as PrintScope[]).map((scope) => <button key={scope} type="button" onClick={() => startPdfExport(scope)} className="inline-flex h-10 items-center gap-2 rounded-xl bg-white px-3 text-[12px] font-bold text-[#5B50D8] transition hover:bg-[#F5F4FF] active:scale-[0.98]"><Printer className="h-4 w-4" />{printScopeMeta[scope].buttonLabel}</button>)}</div><button type="button" onClick={onExportExcel} className="inline-flex h-10 items-center gap-2 self-end rounded-xl border border-white bg-white px-4 text-[13px] font-bold text-[#5B50D8] transition hover:bg-[#F5F4FF] active:scale-[0.98]"><FileSpreadsheet className="h-4 w-4" />Excel 報告</button></div></div></section>
+      <section className="analysis-hero relative overflow-hidden rounded-[24px] bg-[linear-gradient(120deg,#6D5DFB_0%,#9978FF_44%,#F96EA5_100%)] px-5 py-6 text-white shadow-[0_18px_44px_rgba(109,93,251,0.23)] sm:px-7 sm:py-7"><div className="pointer-events-none absolute -right-8 -top-16 h-48 w-48 rounded-full border-[22px] border-white/20" /><div className="relative flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between"><h1 className="text-[30px] font-bold tracking-tight sm:text-[38px]">各兒童表現分析</h1><div className="analysis-export-actions flex flex-wrap gap-2"><div className="analysis-pdf-actions flex flex-wrap gap-2"><p className="w-full text-[11px] font-bold tracking-[0.08em] text-white/85">PDF 匯出範圍</p>{(Object.keys(printScopeMeta) as PrintScope[]).map((scope) => <button key={scope} type="button" onClick={() => startPdfExport(scope)} className="inline-flex h-10 items-center gap-2 rounded-xl bg-white px-3 text-[12px] font-bold text-[#5B50D8] transition hover:bg-[#F5F4FF] active:scale-[0.98]"><Printer className="h-4 w-4" />{printScopeMeta[scope].buttonLabel}</button>)}</div><button type="button" onClick={onExportExcel} className="inline-flex h-10 items-center gap-2 self-end rounded-xl border border-white bg-white px-4 text-[13px] font-bold text-[#5B50D8] transition hover:bg-[#F5F4FF] active:scale-[0.98]"><FileSpreadsheet className="h-4 w-4" />Excel 報告</button></div></div></section>
       <section className="analysis-controls mt-5 grid gap-4 rounded-2xl border border-[#E7E8F3] bg-white p-4 shadow-[0_8px_24px_rgba(42,45,88,0.06)] lg:grid-cols-[minmax(280px,1fr)_auto] lg:items-center">
         <div className="min-w-0"><label className="flex h-11 items-center gap-2 rounded-xl border border-[#DDE0EE] bg-[#FBFBFF] px-3 text-[#6973A0] focus-within:border-[#7A69E8] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#EAE7FF]"><Search className="h-4 w-4 shrink-0 text-[#6D5DFB]" /><input value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} placeholder="搜尋評分項目或兒童名稱" aria-label="搜尋評分項目或兒童名稱" className="min-w-0 flex-1 bg-transparent text-[14px] font-medium text-[#30395F] outline-none placeholder:text-[#9DA4BE]" />{searchTerm && <button type="button" onClick={() => setSearchTerm("")} aria-label="清除搜尋" className="rounded-md p-1 text-[#7A83A7] transition hover:bg-[#EFEEFF] hover:text-[#5B50D8]"><X className="h-4 w-4" /></button>}</label>{searchQuery && <p className="mt-1.5 text-[11px] font-medium text-[#6973A0]">{searchTargetsChildren ? `已標示符合「${searchTerm}」的兒童欄位。` : `顯示包含「${searchTerm}」的評分項目及小範疇。`}</p>}</div>
         <div><div className="mb-2 flex items-center gap-2 text-[13px] font-bold text-[#404A78]"><span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#F0EFFF] text-[#6D5DFB]"><Filter className="h-3.5 w-3.5" /></span>篩選展開項目的分數</div><div className="flex flex-wrap gap-2">{([0, 1, 2] as Rating[]).map((score) => <button key={score} type="button" onClick={() => toggleFilter(score)} aria-pressed={scoreFilter.has(score)} className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-[13px] font-bold transition ${scoreFilter.has(score) ? scoreTone[score] : "border-[#E4E6EF] bg-white text-[#A0A6BB]"}`}><span className={`flex h-4 w-4 items-center justify-center rounded border ${scoreFilter.has(score) ? filterTone[score] : "border-[#C7CDDD] bg-white text-transparent"}`}><Check className="h-3 w-3" /></span>{score}</button>)}</div></div>

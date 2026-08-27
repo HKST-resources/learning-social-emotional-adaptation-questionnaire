@@ -1,5 +1,13 @@
 # Revision Checklist
 
+## PDF Scope Bug Fix
+
+- [x] 改用明確的列印報告內容，不再只依賴畫面 CSS 隱藏不同 PDF 範圍。
+- [x] 確保「只匯出訓練目標」只包含已選訓練目標表格。
+- [x] 確保「範疇總覽及訓練目標」只包含平均分數總覽表及已選訓練目標表格。
+- [x] 確保「完整評估及訓練目標」包含目前展開的詳細評分、平均分數及已選訓練目標表格。
+- [x] 驗證每個 PDF 按鈕輸出不同內容並更新 GitHub 原始碼套件。
+
 ## Corrected PDF Scope Boundaries
 
 - [x] 讓「只匯出訓練目標」只列印「已選訓練目標」表格。
@@ -100,6 +108,11 @@
 - The clear-all-goals action has been invoked for the final reset verification.
 - The reset clears the selected goal count to zero and removes the training-goal table; the previous goal text link correctly returned to and expanded its source item.
 - 三種 PDF 匯出範圍現於頁面狀態完成更新後才觸發瀏覽器列印：訓練目標只顯示已選訓練目標、範疇總覽隱藏詳細列、完整評估則保留教師目前已展開的詳細列；TypeScript 與正式建置檢查已通過。
+- 已建立新的三位兒童測試表，準備驗證獨立列印報告是否在三個 PDF 按鈕下輸出不同內容。
+- 已展開「遵守規則及指令」的五項詳細評分，準備輸入測試分數並檢查完整報告是否只包含目前展開內容。
+- 已為兒童 1 的「能安坐」輸入分數 1，準備在分析頁進行獨立 PDF 報告內容檢查。
+- 分析頁已展開「遵守規則及指令」，因此「完整評估及訓練目標」應包含此小範疇的五項詳細評分，而總覽匯出不應包含這些詳細列。
+- 已直接攔截三個 PDF 按鈕產生的獨立報告內容：訓練目標報告只含目標表、總覽報告含總覽及目標表而不含「能安坐」詳細列、完整報告同時含總覽、目標表及目前展開的「能安坐」詳細列。
 
 ## Exact Five-Lowest Priority Refinement
 
