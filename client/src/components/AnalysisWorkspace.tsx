@@ -165,9 +165,9 @@ function DetailScore({ item, childIndex, childName, entry, selected, visible, on
 type PrintScope = "goals" | "overview" | "complete";
 
 const printScopeMeta: Record<PrintScope, { buttonLabel: string; printTitle: string }> = {
-  goals: { buttonLabel: "訓練目標計劃", printTitle: "小組訓練目標計劃" },
-  overview: { buttonLabel: "小範疇總覽及訓練目標", printTitle: "小範疇總覽及訓練目標" },
-  complete: { buttonLabel: "完整評估與訓練目標", printTitle: "完整評估與訓練目標" },
+  goals: { buttonLabel: "只匯出訓練目標", printTitle: "已選訓練目標" },
+  overview: { buttonLabel: "範疇總覽及訓練目標", printTitle: "範疇總覽及訓練目標" },
+  complete: { buttonLabel: "完整評估及訓練目標", printTitle: "完整評估及訓練目標" },
 };
 
 type OverviewTableProps = {
@@ -298,6 +298,7 @@ export default function AnalysisWorkspace({ ratingDate, childNames, items, ratin
   const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set());
   const [searchTerm, setSearchTerm] = useState("");
   const [printScope, setPrintScope] = useState<PrintScope>("complete");
+  const [pendingPrintScope, setPendingPrintScope] = useState<PrintScope | null>(null);
   const areas = useMemo(() => buildAreaSummaries(items, childNames.length, ratings), [items, childNames.length, ratings]);
   const searchQuery = normaliseSearch(searchTerm);
   const highlightedChildIndices = useMemo(() => new Set(childNames.map((name, index) => ({ name: displayChildName(name, index), index })).filter(({ name }) => includesQuery(name, searchQuery) && Boolean(searchQuery)).map(({ index }) => index)), [childNames, searchQuery]);
@@ -339,12 +340,17 @@ export default function AnalysisWorkspace({ ratingDate, childNames, items, ratin
   };
   const startPdfExport = (scope: PrintScope) => {
     setPrintScope(scope);
-    if (scope === "complete") {
-      setExpandedKeys(new Set(areas.map((area) => area.key)));
-      setScoreFilter(new Set<Rating>([0, 1, 2]));
-    }
-    window.setTimeout(() => window.print(), scope === "complete" ? 180 : 100);
+    setPendingPrintScope(scope);
   };
+
+  useEffect(() => {
+    if (!pendingPrintScope) return;
+    const printTimer = window.setTimeout(() => {
+      window.print();
+      setPendingPrintScope(null);
+    }, 120);
+    return () => window.clearTimeout(printTimer);
+  }, [pendingPrintScope, printScope]);
 
   return <div className={`analysis-print-root print-scope-${printScope} min-h-screen bg-white text-[#20264A]`}>
     <header className="border-b border-[#E8E9F5] bg-white px-4 py-4 sm:px-7"><div className="mx-auto flex max-w-[1700px] flex-wrap items-center justify-between gap-3"><button type="button" onClick={onBack} className="inline-flex items-center gap-2 rounded-xl border border-[#D8DBEE] bg-white px-3 py-2 text-[13px] font-bold text-[#4B5482] transition hover:border-[#7D89FF] hover:bg-[#F6F7FF] active:scale-[0.98]"><ArrowLeft className="h-4 w-4" />返回評分表</button><div className="flex items-center gap-2 text-[12px] font-medium text-[#68709A]"><span>{ratingDate}</span><span className="h-4 w-px bg-[#D9DCEC]" /><span>{childNames.length} 位兒童</span></div></div></header>

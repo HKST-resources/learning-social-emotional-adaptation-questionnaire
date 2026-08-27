@@ -1,5 +1,12 @@
 # Revision Checklist
 
+## Corrected PDF Scope Boundaries
+
+- [x] 讓「只匯出訓練目標」只列印「已選訓練目標」表格。
+- [x] 讓「範疇總覽及訓練目標」只列印兩個平均分數總覽表及「已選訓練目標」表格。
+- [x] 讓「完整評估及訓練目標」列印目前已展開的詳細評分總覽表及「已選訓練目標」表格。
+- [x] 驗證三種範圍在列印預覽中互相有明確差異，並更新 GitHub 原始碼套件。
+
 ## Flexible PDF Export and Fuzzy Search
 
 - [x] 新增「訓練目標計劃」、「小範疇總覽及訓練目標」及「完整評估與訓練目標」三種 PDF 匯出範圍。
@@ -92,6 +99,7 @@
 - Selecting the training-goal text returns to the source area and automatically re-expands its detailed rating rows.
 - The clear-all-goals action has been invoked for the final reset verification.
 - The reset clears the selected goal count to zero and removes the training-goal table; the previous goal text link correctly returned to and expanded its source item.
+- 三種 PDF 匯出範圍現於頁面狀態完成更新後才觸發瀏覽器列印：訓練目標只顯示已選訓練目標、範疇總覽隱藏詳細列、完整評估則保留教師目前已展開的詳細列；TypeScript 與正式建置檢查已通過。
 
 ## Exact Five-Lowest Priority Refinement
 

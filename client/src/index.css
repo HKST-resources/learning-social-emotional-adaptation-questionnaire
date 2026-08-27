@@ -206,6 +206,7 @@ main > section:first-child button.bg-white\/10:hover { background-color: #F5F4FF
   .analysis-hero .analysis-export-actions { display: none !important; }
   .print-scope-goals .analysis-category,
   .print-scope-goals .analysis-controls { display: none !important; }
+  .print-scope-goals .analysis-hero { display: none !important; }
   .print-scope-goals .analysis-goals { break-before: auto !important; page-break-before: auto !important; }
   .print-scope-overview .analysis-detail-row { display: none !important; }
 }
