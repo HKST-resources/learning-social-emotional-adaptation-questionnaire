@@ -1,5 +1,11 @@
 # Revision Checklist
 
+## GitHub Repository Publication
+
+- [ ] Prepare the approved source tree for the private GitHub repository.
+- [ ] Create the private repository learning-social-emotional-adaptation-questionnaire.
+- [ ] Push the final project source to the repository and verify its contents.
+
 ## Overview PDF Two-Page Layout
 
 - [x] 將「範疇總覽及訓練目標」的學習及社交兩個總覽表壓縮至第 1 頁。
