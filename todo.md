@@ -1,5 +1,12 @@
 # Revision Checklist
 
+## Flexible PDF Export and Fuzzy Search
+
+- [x] 新增「訓練目標計劃」、「小範疇總覽及訓練目標」及「完整評估與訓練目標」三種 PDF 匯出範圍。
+- [x] 讓各 PDF 匯出範圍套用相應的橫向／直向列印版式及避免不當分頁規則。
+- [x] 為兒童名稱、評分項目及相關範疇加入支援不連續中文字元的模糊搜尋。
+- [x] 驗證三種列印預覽範圍、模糊搜尋及更新 GitHub 原始碼套件。
+
 ## Print Layout and Analysis Search
 
 - [x] 在分析頁頂部加入關鍵字搜尋列，可篩選評分項目及兒童名稱。

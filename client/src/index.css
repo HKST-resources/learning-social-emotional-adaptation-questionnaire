@@ -178,7 +178,7 @@ main > section:first-child button.bg-white\/10:hover { background-color: #F5F4FF
   .analysis-goals button { display: none !important; }
   .analysis-print-root main { max-width: none !important; padding: 0 !important; }
   .analysis-hero { overflow: visible !important; margin: 0 0 9pt !important; padding: 0 !important; background: transparent !important; box-shadow: none !important; color: #27315A !important; }
-  .analysis-hero h1 { margin: 0 !important; color: #27315A !important; font-family: "Noto Serif TC", serif !important; font-size: 19pt !important; }
+.analysis-hero h1 { margin: 0 !important; color: #27315A !important; font-family: "Noto Serif TC", serif !important; font-size: 19pt !important; }
   .analysis-category { break-inside: auto !important; margin-top: 10pt !important; }
   .analysis-category > div:first-child { margin-bottom: 4pt !important; }
   .analysis-category > div:first-child p,
@@ -201,4 +201,13 @@ main > section:first-child button.bg-white\/10:hover { background-color: #F5F4FF
   .analysis-goals { break-before: page !important; page-break-before: always !important; margin-top: 0 !important; border: 0 !important; background: transparent !important; padding: 0 !important; }
   .analysis-goals > div:first-child { margin-bottom: 5pt !important; }
   .analysis-goals p { color: #626B94 !important; }
+  .screen-analysis-title { display: none !important; }
+  .print-analysis-title { display: inline !important; }
+  .analysis-hero .analysis-export-actions { display: none !important; }
+  .print-scope-goals .analysis-category,
+  .print-scope-goals .analysis-controls { display: none !important; }
+  .print-scope-goals .analysis-goals { break-before: auto !important; page-break-before: auto !important; }
+  .print-scope-overview .analysis-detail-row { display: none !important; }
 }
+
+.print-analysis-title { display: none; }

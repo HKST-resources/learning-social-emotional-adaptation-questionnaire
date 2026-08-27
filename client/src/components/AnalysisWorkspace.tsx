@@ -98,8 +98,45 @@ function normaliseSearch(value: string) {
   return cleanHeading(value).trim().toLocaleLowerCase();
 }
 
+function compactSearch(value: string) {
+  return normaliseSearch(value).replace(/[\s,.;:!?，。；：！？、（）()「」『』【】\-_/]/g, "");
+}
+
+function isOrderedMatch(query: string, target: string) {
+  let queryIndex = 0;
+  for (const character of target) {
+    if (character === query[queryIndex]) queryIndex += 1;
+    if (queryIndex === query.length) return true;
+  }
+  return false;
+}
+
+function editDistance(left: string, right: string) {
+  const row = Array.from({ length: right.length + 1 }, (_, index) => index);
+  for (let leftIndex = 1; leftIndex <= left.length; leftIndex += 1) {
+    let previous = row[0];
+    row[0] = leftIndex;
+    for (let rightIndex = 1; rightIndex <= right.length; rightIndex += 1) {
+      const stored = row[rightIndex];
+      row[rightIndex] = Math.min(row[rightIndex] + 1, row[rightIndex - 1] + 1, previous + (left[leftIndex - 1] === right[rightIndex - 1] ? 0 : 1));
+      previous = stored;
+    }
+  }
+  return row[right.length];
+}
+
 function includesQuery(value: string, query: string) {
-  return !query || normaliseSearch(value).includes(query);
+  if (!query) return true;
+  const target = compactSearch(value);
+  const compactQuery = compactSearch(query);
+  if (!compactQuery || target.includes(compactQuery) || isOrderedMatch(compactQuery, target)) return true;
+  if (compactQuery.length < 3) return false;
+  const tolerance = compactQuery.length >= 6 ? 2 : 1;
+  for (let start = 0; start < target.length; start += 1) {
+    const candidate = target.slice(start, start + compactQuery.length);
+    if (candidate.length === compactQuery.length && editDistance(compactQuery, candidate) <= tolerance) return true;
+  }
+  return false;
 }
 
 function areaMatchesQuery(area: SummaryArea, query: string) {
@@ -124,6 +161,14 @@ function DetailScore({ item, childIndex, childName, entry, selected, visible, on
   if (!visible || entry?.score === undefined) return <span className="block h-8 w-full rounded-full border border-transparent sm:h-9" />;
   return <button type="button" onClick={() => onToggleGoal(item.id, childIndex)} aria-pressed={selected} aria-label={`${selected ? "取消" : "選擇"}${displayChildName(childName, childIndex)} 的訓練目標：${item.text.split("\n")[0]}`} className={`grid h-8 w-full grid-cols-[1fr_auto_1fr] items-center rounded-full border px-2 text-[12px] font-extrabold transition active:scale-[0.97] sm:h-9 sm:text-[13px] ${scoreTone[entry.score]} ${selected ? "border-[4px] border-[#00C957] shadow-[0_0_0_4px_rgba(0,201,87,0.42),0_0_26px_rgba(0,201,87,0.82),inset_0_0_0_1px_rgba(0,124,52,0.45)" : ""}`}><span className="col-start-2">{entry.score}</span>{selected && <Check className="col-start-3 h-4 w-4 justify-self-end stroke-[4] text-[#00B94F] drop-shadow-[0_1px_0_rgba(255,255,255,0.98)] sm:h-5 sm:w-5" />}</button>;
 }
+
+type PrintScope = "goals" | "overview" | "complete";
+
+const printScopeMeta: Record<PrintScope, { buttonLabel: string; printTitle: string }> = {
+  goals: { buttonLabel: "訓練目標計劃", printTitle: "小組訓練目標計劃" },
+  overview: { buttonLabel: "小範疇總覽及訓練目標", printTitle: "小範疇總覽及訓練目標" },
+  complete: { buttonLabel: "完整評估與訓練目標", printTitle: "完整評估與訓練目標" },
+};
 
 type OverviewTableProps = {
   category: string;
@@ -252,6 +297,7 @@ export default function AnalysisWorkspace({ ratingDate, childNames, items, ratin
   const [scoreFilter, setScoreFilter] = useState<Set<Rating>>(new Set<Rating>([0, 1, 2]));
   const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set());
   const [searchTerm, setSearchTerm] = useState("");
+  const [printScope, setPrintScope] = useState<PrintScope>("complete");
   const areas = useMemo(() => buildAreaSummaries(items, childNames.length, ratings), [items, childNames.length, ratings]);
   const searchQuery = normaliseSearch(searchTerm);
   const highlightedChildIndices = useMemo(() => new Set(childNames.map((name, index) => ({ name: displayChildName(name, index), index })).filter(({ name }) => includesQuery(name, searchQuery) && Boolean(searchQuery)).map(({ index }) => index)), [childNames, searchQuery]);
@@ -291,11 +337,19 @@ export default function AnalysisWorkspace({ ratingDate, childNames, items, ratin
     setExpandedKeys((current) => new Set(Array.from(current).concat(areaKey)));
     window.setTimeout(() => document.getElementById(`analysis-item-${itemId}`)?.scrollIntoView({ behavior: "smooth", block: "center" }), 90);
   };
+  const startPdfExport = (scope: PrintScope) => {
+    setPrintScope(scope);
+    if (scope === "complete") {
+      setExpandedKeys(new Set(areas.map((area) => area.key)));
+      setScoreFilter(new Set<Rating>([0, 1, 2]));
+    }
+    window.setTimeout(() => window.print(), scope === "complete" ? 180 : 100);
+  };
 
-  return <div className="analysis-print-root min-h-screen bg-white text-[#20264A]">
+  return <div className={`analysis-print-root print-scope-${printScope} min-h-screen bg-white text-[#20264A]`}>
     <header className="border-b border-[#E8E9F5] bg-white px-4 py-4 sm:px-7"><div className="mx-auto flex max-w-[1700px] flex-wrap items-center justify-between gap-3"><button type="button" onClick={onBack} className="inline-flex items-center gap-2 rounded-xl border border-[#D8DBEE] bg-white px-3 py-2 text-[13px] font-bold text-[#4B5482] transition hover:border-[#7D89FF] hover:bg-[#F6F7FF] active:scale-[0.98]"><ArrowLeft className="h-4 w-4" />返回評分表</button><div className="flex items-center gap-2 text-[12px] font-medium text-[#68709A]"><span>{ratingDate}</span><span className="h-4 w-px bg-[#D9DCEC]" /><span>{childNames.length} 位兒童</span></div></div></header>
     <main className="mx-auto max-w-[1700px] px-3 pb-10 pt-5 sm:px-6 sm:pt-8">
-      <section className="analysis-hero relative overflow-hidden rounded-[24px] bg-[linear-gradient(120deg,#6D5DFB_0%,#9978FF_44%,#F96EA5_100%)] px-5 py-6 text-white shadow-[0_18px_44px_rgba(109,93,251,0.23)] sm:px-7 sm:py-7"><div className="pointer-events-none absolute -right-8 -top-16 h-48 w-48 rounded-full border-[22px] border-white/20" /><div className="relative flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between"><h1 className="text-[30px] font-bold tracking-tight sm:text-[38px]">各兒童表現分析</h1><div className="flex flex-wrap gap-2"><button type="button" onClick={() => window.print()} className="inline-flex h-10 items-center gap-2 rounded-xl bg-white px-4 text-[13px] font-bold text-[#5B50D8] transition hover:bg-[#F5F4FF] active:scale-[0.98]"><Printer className="h-4 w-4" />PDF 報告</button><button type="button" onClick={onExportExcel} className="inline-flex h-10 items-center gap-2 rounded-xl border border-white bg-white px-4 text-[13px] font-bold text-[#5B50D8] transition hover:bg-[#F5F4FF] active:scale-[0.98]"><FileSpreadsheet className="h-4 w-4" />Excel 報告</button></div></div></section>
+      <section className="analysis-hero relative overflow-hidden rounded-[24px] bg-[linear-gradient(120deg,#6D5DFB_0%,#9978FF_44%,#F96EA5_100%)] px-5 py-6 text-white shadow-[0_18px_44px_rgba(109,93,251,0.23)] sm:px-7 sm:py-7"><div className="pointer-events-none absolute -right-8 -top-16 h-48 w-48 rounded-full border-[22px] border-white/20" /><div className="relative flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between"><h1 className="text-[30px] font-bold tracking-tight sm:text-[38px]"><span className="screen-analysis-title">各兒童表現分析</span><span className="print-analysis-title">{printScopeMeta[printScope].printTitle}</span></h1><div className="analysis-export-actions flex flex-wrap gap-2"><div className="analysis-pdf-actions flex flex-wrap gap-2"><p className="w-full text-[11px] font-bold tracking-[0.08em] text-white/85">PDF 匯出範圍</p>{(Object.keys(printScopeMeta) as PrintScope[]).map((scope) => <button key={scope} type="button" onClick={() => startPdfExport(scope)} className="inline-flex h-10 items-center gap-2 rounded-xl bg-white px-3 text-[12px] font-bold text-[#5B50D8] transition hover:bg-[#F5F4FF] active:scale-[0.98]"><Printer className="h-4 w-4" />{printScopeMeta[scope].buttonLabel}</button>)}</div><button type="button" onClick={onExportExcel} className="inline-flex h-10 items-center gap-2 self-end rounded-xl border border-white bg-white px-4 text-[13px] font-bold text-[#5B50D8] transition hover:bg-[#F5F4FF] active:scale-[0.98]"><FileSpreadsheet className="h-4 w-4" />Excel 報告</button></div></div></section>
       <section className="analysis-controls mt-5 grid gap-4 rounded-2xl border border-[#E7E8F3] bg-white p-4 shadow-[0_8px_24px_rgba(42,45,88,0.06)] lg:grid-cols-[minmax(280px,1fr)_auto] lg:items-center">
         <div className="min-w-0"><label className="flex h-11 items-center gap-2 rounded-xl border border-[#DDE0EE] bg-[#FBFBFF] px-3 text-[#6973A0] focus-within:border-[#7A69E8] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#EAE7FF]"><Search className="h-4 w-4 shrink-0 text-[#6D5DFB]" /><input value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} placeholder="搜尋評分項目或兒童名稱" aria-label="搜尋評分項目或兒童名稱" className="min-w-0 flex-1 bg-transparent text-[14px] font-medium text-[#30395F] outline-none placeholder:text-[#9DA4BE]" />{searchTerm && <button type="button" onClick={() => setSearchTerm("")} aria-label="清除搜尋" className="rounded-md p-1 text-[#7A83A7] transition hover:bg-[#EFEEFF] hover:text-[#5B50D8]"><X className="h-4 w-4" /></button>}</label>{searchQuery && <p className="mt-1.5 text-[11px] font-medium text-[#6973A0]">{searchTargetsChildren ? `已標示符合「${searchTerm}」的兒童欄位。` : `顯示包含「${searchTerm}」的評分項目及小範疇。`}</p>}</div>
         <div><div className="mb-2 flex items-center gap-2 text-[13px] font-bold text-[#404A78]"><span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#F0EFFF] text-[#6D5DFB]"><Filter className="h-3.5 w-3.5" /></span>篩選展開項目的分數</div><div className="flex flex-wrap gap-2">{([0, 1, 2] as Rating[]).map((score) => <button key={score} type="button" onClick={() => toggleFilter(score)} aria-pressed={scoreFilter.has(score)} className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-[13px] font-bold transition ${scoreFilter.has(score) ? scoreTone[score] : "border-[#E4E6EF] bg-white text-[#A0A6BB]"}`}><span className={`flex h-4 w-4 items-center justify-center rounded border ${scoreFilter.has(score) ? filterTone[score] : "border-[#C7CDDD] bg-white text-transparent"}`}><Check className="h-3 w-3" /></span>{score}</button>)}</div></div>
